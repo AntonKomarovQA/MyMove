@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mymove.data.Move;
@@ -19,25 +23,50 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-        private RecyclerView recyclerViewPoster;
-        private MoveAdapter moveAdapter;
+    private RecyclerView recyclerViewPoster;
+    private MoveAdapter moveAdapter;
+    private Switch aSwitchSort;
+    private TextView textViewPop;
+    private TextView textViewTop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        textViewPop = findViewById(R.id.textViewPop);
+        textViewTop = findViewById(R.id.textViewTOP);
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
-        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this,4)); // расположение сеткой
+        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
-        JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
+        aSwitchSort = findViewById(R.id.switchSort);
+        /*JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
         ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
-        moveAdapter.setMoves(moves);
+        moveAdapter.setMoves(moves);*/
         recyclerViewPoster.setAdapter(moveAdapter);
-
-       //1 проверка
+        aSwitchSort.setChecked(true);
+        aSwitchSort.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // добавили слушательно на свич
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setaSwitchSorta(isChecked);
+            }
+        });
+        aSwitchSort.setChecked(false);
+        moveAdapter.setOnPosterCliclLister(new MoveAdapter.onPosterCliclLister() {
+            @Override
+            public void onPosterClic(int position) {
+                Toast.makeText(MainActivity.this,"Выбрано "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
+        moveAdapter.setOnReacheEndLister(new MoveAdapter.onReacheEndLister() {
+            @Override
+            public void onReadchEnd() {
+                Toast.makeText(MainActivity.this,"Конец списка ",Toast.LENGTH_SHORT).show();
+            }
+        });
+        //1 проверка
         /* String url = Network.bildURL(Network.Popularity,3).toString();
             Log.i ("XX",url); */  //17min работает норм, строке пристаиваем нетворк поп и выводим в логи  //
-     // 2 проверка
+        // 2 проверка
        /* JSONObject jsonObject = Network.getJsonFromNet(Network.Top, 2);
 
         if (jsonObject == null) {
@@ -52,6 +81,33 @@ public class MainActivity extends AppCompatActivity {
             builder.append(move.getTitle()).append("\n");
         }
         Log.i("XX",builder.toString());*/
+    }
+
+    public void onClickPop(View view) {
+        setaSwitchSorta(false);
+        aSwitchSort.setChecked(false);
+
+    }
+
+    public void onClickTOP(View view) {
+        setaSwitchSorta(false);
+        aSwitchSort.setChecked(true);
+    }
+
+    private void setaSwitchSorta(boolean isTopRat) {
+        int sortSwitch;
+        if (isTopRat) {
+            textViewTop.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+            textViewPop.setTextColor(getResources().getColor(android.R.color.white));
+            sortSwitch = Network.Popularity;
+        } else {
+            textViewPop.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+            textViewTop.setTextColor(getResources().getColor(android.R.color.white));
+            sortSwitch = Network.Top;
+        }
+        JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 1); // получаем список фильмов
+        ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
+        moveAdapter.setMoves(moves);
     }
 }
 

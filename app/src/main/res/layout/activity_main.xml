@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -13,14 +14,18 @@
         android:id="@+id/switchSort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/textView2"
-        app:layout_constraintStart_toEndOf="@id/textView"
+        app:layout_constraintEnd_toStartOf="@id/textViewTOP"
+        app:layout_constraintStart_toEndOf="@id/textViewPop"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewPop"
+        android:textColor="@color/white"
         android:layout_width="0dp"
+        android:textSize="20sp"
+        android:onClick="onClickPop"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="@string/Popularity"
         app:layout_constraintBottom_toBottomOf="@+id/switchSort"
@@ -29,10 +34,13 @@
         app:layout_constraintTop_toTopOf="@+id/switchSort" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewTOP"
         android:layout_width="0dp"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:onClick="onClickTOP"
+        android:textSize="20sp"
         android:text="@string/Top"
         app:layout_constraintBottom_toBottomOf="@+id/switchSort"
         app:layout_constraintEnd_toEndOf="parent"

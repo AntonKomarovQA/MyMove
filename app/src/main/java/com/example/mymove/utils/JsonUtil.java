@@ -23,7 +23,7 @@ public class JsonUtil {
 
     private static final String KEY_Result = "results"; // получение Json по Резалт
 
-    private static final String Base_URL_Image = "https://image.tmdb.org/t/p"; //ссылка на картинку
+    private static final String Base_URL_Image = "https://image.tmdb.org/t/p/"; //ссылка на картинку
     private static final String Smol_Poster_Image = "w185"; // poster_size размер картинки маленькой
     private static final String Big_Poster_Image = "w780";  // размер большой картинки
 
