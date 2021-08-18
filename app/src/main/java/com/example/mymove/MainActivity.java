@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
         moveAdapter.setOnPosterCliclLister(new MoveAdapter.onPosterCliclLister() {
             @Override
             public void onPosterClic(int position) {
-                Toast.makeText(MainActivity.this,"Выбрано "+position,Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(MainActivity.this,"Выбрано "+position,Toast.LENGTH_SHORT).show();
+                Move move = moveAdapter.getMoves().get(position);
+                Intent intent = new Intent(MainActivity.this,DitalActiviti.class);
+                intent.putExtra("id",move.getId()); //отправляем фильм с описанием
+                startActivity(intent);
             }
         });
         moveAdapter.setOnReacheEndLister(new MoveAdapter.onReacheEndLister() {

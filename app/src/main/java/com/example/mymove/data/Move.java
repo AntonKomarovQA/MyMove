@@ -12,7 +12,7 @@ public class Move {
     private int id ;  // для хранения в базе данных
     private int voteCount; // количество голосов
     private String title; // заголовок
-    private String original; // оригинальное нахвание
+    private String original; // оригинальное название
     private String overview; // описание фильма
     private String poster; // путь к постеру c малым разрешением
     private String bigposter ; // с большим разрешением
