@@ -1,8 +1,12 @@
 package com.example.mymove;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymove.data.MainVievModel;
 import com.example.mymove.data.Move;
 import com.example.mymove.utils.JsonUtil;
 import com.example.mymove.utils.Network;
@@ -20,6 +25,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewPop;
     private TextView textViewTop;
 
+    private MainVievModel vievModel; // обьек вье модел
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textViewPop = findViewById(R.id.textViewPop);
         textViewTop = findViewById(R.id.textViewTOP);
+        vievModel = new ViewModelProvider(this).get(MainVievModel.class); // присвоили
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
         recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
@@ -61,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReadchEnd() {
                 Toast.makeText(MainActivity.this,"Конец списка ",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        LiveData<List<Move>> moveFromData = vievModel.getMoves(); //
+        moveFromData.observe(this, new Observer<List<Move>>() { // создали обсервер
+            @Override // когда данные будут изменяться мы будем их устанавливать у адаптера
+            public void onChanged(List<Move> moves) {
+                moveAdapter.setMoves(moves);
             }
         });
         //1 проверка
@@ -105,9 +123,23 @@ public class MainActivity extends AppCompatActivity {
             textViewTop.setTextColor(getResources().getColor(android.R.color.white));
             sortSwitch = Network.Top;
         }
+        /*JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 1); // а так же загрузка данных получаем список фильмов
+        ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
+        moveAdapter.setMoves(moves);*/
+        dowmloadData(sortSwitch,2); // сам метод
+    }
+
+    //загрузка данных
+    private void dowmloadData(int sortSwitch, int page){ // будем сортироват
         JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 1); // получаем список фильмов
         ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
-        moveAdapter.setMoves(moves);
+
+        if (moves != null && !moves.isEmpty()){ // проверка
+            vievModel.deletAllMove(); // очищаем предыдуще данные
+            for (Move move : moves){
+                vievModel.InsertMove(move); // вставляем новые данные
+            }
+        }
     }
 }
 

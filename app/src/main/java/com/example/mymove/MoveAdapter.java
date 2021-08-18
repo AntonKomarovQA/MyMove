@@ -11,17 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.example.mymove.data.Move;
 import com.example.mymove.utils.Network;
 import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
 
-    private ArrayList<Move> moves;
+    private List<Move> moves;
     private onPosterCliclLister onPosterCliclLister;
     private onReacheEndLister onReacheEndLister;
 
@@ -88,16 +89,16 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
         this.onReacheEndLister = onReacheEndLister;
     }
 
-    public ArrayList<Move> getMoves() {
+    public List<Move> getMoves() {
         return moves;
     }
 
-    public void addMoves(ArrayList<Move> moves) {
+    public void addMoves(List<Move> moves) {
         this.moves = moves;
         notifyDataSetChanged();
     }
 
-    public void setMoves(ArrayList<Move> moves) {
+    public void setMoves(List<Move> moves) {
         this.moves = moves;
         notifyDataSetChanged();
     }

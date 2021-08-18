@@ -1,6 +1,14 @@
 package com.example.mymove.data;
 
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+
+// таблица в базе данных (таблица называется  = мовес)
+@Entity(tableName = "moves")
 public class Move {
+    @PrimaryKey // id первичный ключ primarikey
     private int id ;  // для хранения в базе данных
     private int voteCount; // количество голосов
     private String title; // заголовок
