@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
     //загрузка данных
     private void dowmloadData(int sortSwitch, int page){ // будем сортироват
-        JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 1); // получаем список фильмов
+        JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 2); // получаем список фильмов
         ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
 
         if (moves != null && !moves.isEmpty()){ // проверка

@@ -7,7 +7,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Move.class},version = 1,exportSchema = false)
+@Database(entities = {Move.class,FavoritMove.class},version = 2,exportSchema = false)
 // анатация датабейс ентетис  версия .
     public abstract class MoveDATaBase extends RoomDatabase {
     private static MoveDATaBase daTaBase;
@@ -17,7 +17,7 @@ import androidx.room.RoomDatabase;
     public static MoveDATaBase getInstance(Context context) {
         synchronized (LOCK) { // блок синхронизаций
             if (daTaBase == null) { //
-                daTaBase = Room.databaseBuilder(context, MoveDATaBase.class, DB_Name).build();
+                daTaBase = Room.databaseBuilder(context, MoveDATaBase.class, DB_Name).fallbackToDestructiveMigration().build();
             }
             return daTaBase;
         }
