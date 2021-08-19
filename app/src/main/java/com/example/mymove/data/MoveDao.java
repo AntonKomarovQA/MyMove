@@ -31,7 +31,7 @@ public interface MoveDao {
     void deletMov(Move move); // удалаем 1 элемент
 
     //для 2 таблицы
-    @Query("SELECT*FROM moves")// запрос к базе
+    @Query("SELECT*FROM Favorit_Move")// запрос к базе
     LiveData<List<FavoritMove>> getAllFavoritMove();//возвращет лив дата
 
     @Query("SELECT * FROM Favorit_Move WHERE id == :moveID")

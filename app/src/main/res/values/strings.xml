@@ -13,6 +13,8 @@
     <string name="todo">TODO</string>
     <string name="Delete_FrovMove">Удалено из избранное</string>
     <string name="Favorite_Plus">Фильм добавлен в избранное</string>
+    <string name="Favorit">Избранное</string>
+    <string name="Menu">Главная</string>
 
 
 </resources>

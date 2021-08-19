@@ -1,10 +1,14 @@
 package com.example.mymove;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +33,33 @@ public class DitalActiviti extends AppCompatActivity {
     private int id;
     private MainVievModel vievModel;
     private Move move;
- private FavoritMove favoritMove;
+    private FavoritMove favoritMove;
+
+    @Override // переопределяем меню
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // нужно получить меню инфлейтер
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // реагируем на нажания в меню
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.itemMain:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.itemFavorit:
+                Intent intent1 = new Intent(this, LoveFilms.class);
+                startActivity(intent1);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,19 +89,19 @@ public class DitalActiviti extends AppCompatActivity {
     }
 
     public void onClicChangeFavor(View view) {
-        if (favoritMove== null){
+        if (favoritMove == null) {
             vievModel.InsertFavoritMove(new FavoritMove(move));
-            Toast.makeText(this, R.string.Favorite_Plus,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.Favorite_Plus, Toast.LENGTH_SHORT).show();
         } else {
             vievModel.deletFavoritMov(favoritMove);
-            Toast.makeText(DitalActiviti.this, R.string.Delete_FrovMove,Toast.LENGTH_SHORT).show();
+            Toast.makeText(DitalActiviti.this, R.string.Delete_FrovMove, Toast.LENGTH_SHORT).show();
         }
         setFavorit();
     }
 
-    private void setFavorit(){
+    private void setFavorit() {
         favoritMove = vievModel.getFavoritMoveID(id); // существует ли фильм
-        if (favoritMove == null){
+        if (favoritMove == null) {
             imageViewAddFavorit.setImageResource(android.R.drawable.btn_star_big_off);
         } else {
             imageViewAddFavorit.setImageResource(android.R.drawable.btn_star_big_on);
