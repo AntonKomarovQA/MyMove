@@ -1,19 +1,17 @@
-package com.example.mymove;
+package com.example.mymove.adapter;
 
-import android.renderscript.RenderScript;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 //import com.bumptech.glide.Glide;
+import com.example.mymove.R;
 import com.example.mymove.data.Move;
-import com.example.mymove.utils.Network;
 import com.squareup.picasso.Picasso;
 
 
@@ -31,7 +29,7 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
         moves = new ArrayList<>();
     }
 
-    interface onPosterCliclLister {
+   public interface onPosterCliclLister {
         void onPosterClic(int position); // метод принимает инт
     }
 
@@ -39,7 +37,7 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
         this.onPosterCliclLister = onPosterCliclLister;
     }
 
-    interface onReacheEndLister{
+    public interface onReacheEndLister{
         void onReadchEnd();
     }
 

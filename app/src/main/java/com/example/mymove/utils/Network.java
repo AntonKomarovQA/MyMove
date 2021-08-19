@@ -19,6 +19,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Network {
     private static final String Base_URL = "https://api.themoviedb.org/3/discover/movie"; // ссылка
+    private static final String Base_URl_Video = "https://api.themoviedb.org/3/movie/%s/videos"; // ссылка на трейлер
+    private static final String Base_URL_Reviews = "https://api.themoviedb.org/3/movie/%s/reviews"; // ссылка на отзывы
+
+
+
+
 
     private static final String parms_Api_Key = "api_key"; // ключ
     private static final String parms_Language = "language"; // язык
@@ -36,6 +42,56 @@ public class Network {
     public static final int Relies_Date = 2;
 
 
+    // Создание трейлера
+    private static URL bildURLVideo(int id) {
+        Uri uri = Uri.parse(String.format(Base_URl_Video, id)).buildUpon()
+                .appendQueryParameter(parms_Api_Key, Api)
+                .appendQueryParameter(parms_Language, Language_Value).build();
+        try {
+            return new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static JSONObject getJsonForVideo(int id) { //получается метод из сети
+        JSONObject res = null;
+        URL urL = bildURLVideo(id);
+        try {
+            res = new JsonLoadTask().execute(urL).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+//
+
+    // Создаем Юрл который возвращает Отзывы
+    private static URL bildURLReviews(int id) {
+        Uri uri = Uri.parse(String.format(Base_URL_Reviews, id)).buildUpon()
+                .appendQueryParameter(parms_Api_Key, Api)
+                .appendQueryParameter(parms_Language, Language_Value).build();
+        try {
+            return new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static JSONObject getJsonForReview(int id) { //получается метод из сети
+        JSONObject res = null;
+        URL urL = bildURLReviews(id);
+        try {
+            res = new JsonLoadTask().execute(urL).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    //
     private static URL bildURL(int sortBy, int page) { // который возвщает запрос
         URL result = null;
         String metodofSort;

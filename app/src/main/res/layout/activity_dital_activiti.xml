@@ -157,7 +157,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/BigPoster"
             app:srcCompat="@android:drawable/btn_star_big_on" />
+ <androidx.recyclerview.widget.RecyclerView
+     android:id="@+id/RecyclerVierTrailers"
+     android:layout_width="0dp"
+     android:layout_height="wrap_content"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@id/textViewOpisanie2"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerVierRevies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/RecyclerVierTrailers"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

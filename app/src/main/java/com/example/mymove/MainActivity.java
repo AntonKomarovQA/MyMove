@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mymove.data.FavoritMove;
+import com.example.mymove.adapter.MoveAdapter;
 import com.example.mymove.data.MainVievModel;
 import com.example.mymove.data.Move;
 import com.example.mymove.utils.JsonUtil;
@@ -29,7 +28,6 @@ import com.example.mymove.utils.Network;
 
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 

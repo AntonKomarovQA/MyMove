@@ -3,8 +3,11 @@ package com.example.mymove;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,10 +17,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymove.adapter.ReviewAdapter;
+import com.example.mymove.adapter.TrailerAdapter;
 import com.example.mymove.data.FavoritMove;
 import com.example.mymove.data.MainVievModel;
 import com.example.mymove.data.Move;
+import com.example.mymove.data.Review;
+import com.example.mymove.data.Trailer;
+import com.example.mymove.utils.JsonUtil;
+import com.example.mymove.utils.Network;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class DitalActiviti extends AppCompatActivity {
 
@@ -27,6 +41,12 @@ public class DitalActiviti extends AppCompatActivity {
     private TextView TextViewReiting;
     private TextView TextViewDataReliz;
     private TextView TextViewOpis;
+
+    private ReviewAdapter reviewAdapter;
+    private TrailerAdapter trailerAdapter;
+    private RecyclerView recyclerViewReview;
+    private RecyclerView recyclerViewTrailer;
+
 
     private ImageView imageViewAddFavorit;
 
@@ -86,6 +106,29 @@ public class DitalActiviti extends AppCompatActivity {
         TextViewDataReliz.setText(move.getRealiseDate());
         TextViewOpis.setText(move.getOverview());
         setFavorit();
+
+        recyclerViewReview = findViewById(R.id.RecyclerVierRevies); // присвоил отзывы
+        recyclerViewTrailer = findViewById(R.id.RecyclerVierTrailers); // присвоил трейлер
+        reviewAdapter = new ReviewAdapter();
+        trailerAdapter = new TrailerAdapter();
+        trailerAdapter.setOnTrailerClicListner(new TrailerAdapter.OnTrailerClicListner() {
+            @Override
+            public void onTrailer(String url) {
+              //  Toast.makeText(DitalActiviti.this,url,Toast.LENGTH_SHORT).show();//выводили адрес обзора на трейлер
+                Intent intent1 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent1);
+            }
+        });
+        recyclerViewReview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewReview.setAdapter(reviewAdapter);
+        recyclerViewTrailer.setAdapter(trailerAdapter);
+        JSONObject jsonObjectTrailer = Network.getJsonForVideo(move.getId());
+        JSONObject jsonObjectReview = Network.getJsonForReview(move.getId());
+        ArrayList<Trailer> trailers = JsonUtil.trailersFromJson(jsonObjectTrailer);
+        ArrayList<Review> reviews = JsonUtil.reviewsFromJson(jsonObjectReview);
+        reviewAdapter.setReviews(reviews);
+        trailerAdapter.setTrailers(trailers);
     }
 
     public void onClicChangeFavor(View view) {

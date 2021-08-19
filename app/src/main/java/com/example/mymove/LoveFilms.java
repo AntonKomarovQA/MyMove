@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.mymove.adapter.MoveAdapter;
 import com.example.mymove.data.FavoritMove;
 import com.example.mymove.data.MainVievModel;
 import com.example.mymove.data.Move;
