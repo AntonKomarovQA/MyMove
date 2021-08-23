@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mymove.adapter.MoveAdapter;
+import com.example.mymove.data.FavoritMove;
 import com.example.mymove.data.MainVievModel;
 import com.example.mymove.data.Move;
 import com.example.mymove.utils.JsonUtil;
@@ -28,6 +30,7 @@ import com.example.mymove.utils.Network;
 
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         textViewTop = findViewById(R.id.textViewTOP);
         vievModel = new ViewModelProvider(this).get(MainVievModel.class); // присвоили
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
-        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
+        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 2)); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
         aSwitchSort = findViewById(R.id.switchSort);
         /*JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
