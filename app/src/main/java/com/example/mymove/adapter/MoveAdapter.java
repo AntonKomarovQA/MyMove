@@ -50,7 +50,7 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MoveAdapter.MoveHolder holder, int position) {
-       if (position == moves.size()-4 && onReacheEndLister != null){
+       if (position > moves.size()-4 && onReacheEndLister != null){
             onReacheEndLister.onReadchEnd();
        }
         Move move = moves.get(position);

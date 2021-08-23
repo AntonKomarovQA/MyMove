@@ -115,7 +115,7 @@ public class DitalActiviti extends AppCompatActivity {
             @Override
             public void onTrailer(String url) {
               //  Toast.makeText(DitalActiviti.this,url,Toast.LENGTH_SHORT).show();//выводили адрес обзора на трейлер
-                Intent intent1 = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                Intent intent1 = new Intent(Intent.ACTION_VIEW, Uri.parse(url)); //трейлер грузится сразу в интернет
                 startActivity(intent1);
             }
         });

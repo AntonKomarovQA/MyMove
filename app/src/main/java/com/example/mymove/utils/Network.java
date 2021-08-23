@@ -70,8 +70,8 @@ public class Network {
     // Создаем Юрл который возвращает Отзывы
     private static URL bildURLReviews(int id) {
         Uri uri = Uri.parse(String.format(Base_URL_Reviews, id)).buildUpon()
-                .appendQueryParameter(parms_Api_Key, Api)
-                .appendQueryParameter(parms_Language, Language_Value).build();
+                .appendQueryParameter(parms_Api_Key, Api).build();
+              //.appendQueryParameter(parms_Language, Language_Value)
         try {
             return new URL(uri.toString());
         } catch (MalformedURLException e) {

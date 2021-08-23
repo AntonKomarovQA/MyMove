@@ -18,7 +18,7 @@ public class MainVievModel extends AndroidViewModel {
 
     public MainVievModel(@NonNull Application application) {
         super(application);
-        daTaBase = MoveDATaBase.getInstance(getApplication()); // присваиваем
+        daTaBase = MoveDATaBase.getInstance(getApplication()); // присваиваем значение
         moves = daTaBase.moveDao().getAllMove();
         favoritMove = daTaBase.moveDao().getAllFavoritMove();
     }
@@ -26,6 +26,9 @@ public class MainVievModel extends AndroidViewModel {
     public LiveData<List<FavoritMove>> getFavoritMove() {
         return favoritMove;
     }
+
+
+    // для  главной таблицы
 
     public Move getMoveID(int id) { // возвращает обьект муви
         try {
@@ -36,35 +39,35 @@ public class MainVievModel extends AndroidViewModel {
         return null;
     }
 
-    public void deletAllMove() {
-        new DeletAllMove().execute();
-    } // метод для удаления всех параметров
-
-    public void InsertMove(Move move) {
-        new InsertMove().execute(move);
-    } //  метод для вставки
-
-    public void deletMove(Move move) {
-        new DeletMove().execute(move);
-    } // метод для удаления 1 элемента в таблице
-
-    public LiveData<List<Move>> getMoves() {
-        return moves;
-    }
-
-    private static class DeletMove extends AsyncTask<Move, Void, Void> {
-        @Override
-        protected Void doInBackground(Move... moves) {
-            if (moves != null && moves.length > 0) {
-                daTaBase.moveDao().deletMov(moves[0]);
+    private static class GetMove extends AsyncTask<Integer, Void, Move> { // другой программый поток
+        @Override //создаем другой поток принимает параметр инт воид возвращает мову
+        protected Move doInBackground(Integer... integers) {
+            if (integers != null && integers.length > 0) {
+                return daTaBase.moveDao().getMoveByID(integers[0]);
             }
             return null;
         }
     }
 
+    public void deletAllMove() {
+        new DeletAllMove().execute();
+    } // метод для удаления всех параметров
+
+    private static class DeletAllMove extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... integer) {
+            daTaBase.moveDao().deletAllMove();
+            return null;
+        }
+    }
+
+    public void InsertMove(Move move) {
+        new InsertMove().execute(move);
+    } //  метод для вставки
+
     private static class InsertMove extends AsyncTask<Move, Void, Void> {
 
-        @Override
+        @Override    // для вставки 1 элемента
         protected Void doInBackground(Move... moves) {
             if (moves != null && moves.length > 0) {
                 daTaBase.moveDao().insertMove(moves[0]);
@@ -73,26 +76,27 @@ public class MainVievModel extends AndroidViewModel {
         }
     }
 
+    public void deletMove(Move move) {
+        new DeletMove().execute(move);
+    } // метод для удаления 1 элемента в таблице
 
-    private static class DeletAllMove extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            daTaBase.moveDao().deletAllMove();
-            return null;
-        }
-    }
-
-
-    private static class GetMove extends AsyncTask<Integer, Void, Move> { //создаем другой поток принимает параметр инт воид возвращает мову
-        @Override
-        protected Move doInBackground(Integer... integers) {
-            if (integers != null && integers.length > 0) {
-                return daTaBase.moveDao().getMoveByID(integers[0]);
+    private static class DeletMove extends AsyncTask<Move, Void, Void> {
+        @Override // для удаления 1 элемента
+        protected Void doInBackground(Move... moves) {
+            if (moves != null && moves.length > 0) {
+                daTaBase.moveDao().deletMov(moves[0]);
             }
             return null;
         }
     }
- // для Избранных фильмов
+
+
+    public LiveData<List<Move>> getMoves() {
+        return moves;
+    }
+
+
+    // для Избранных фильмов
     public void InsertFavoritMove(FavoritMove favoritMove) {
         new InsertFavoritMove().execute(favoritMove);
     } //  метод для вставки
@@ -130,6 +134,7 @@ public class MainVievModel extends AndroidViewModel {
         }
         return null;
     }
+
     private static class GetFavoritMove extends AsyncTask<Integer, Void, FavoritMove> { //создаем другой поток принимает параметр инт воид возвращает мову
         @Override
         protected FavoritMove doInBackground(Integer... integers) {
