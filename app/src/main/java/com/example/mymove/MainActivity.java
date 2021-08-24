@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         textViewTop = findViewById(R.id.textViewTOP);
         vievModel = new ViewModelProvider(this).get(MainVievModel.class); // присвоили
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
-        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 2)); // расположение сеткой
+        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
         aSwitchSort = findViewById(R.id.switchSort);
         /*JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
