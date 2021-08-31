@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "moves")
 public class Move {
     @PrimaryKey(autoGenerate = true) // id первичный ключ primarikey
-    private int uniqueID;
+    private int uniqueID; // первичный ключ сейчас
     private int id;  // для хранения в базе данных
     private int voteCount; // количество голосов
     private String title; // заголовок
@@ -35,7 +35,7 @@ public class Move {
         this.voteAverage = voteAverage;
         this.realiseDate = realiseDate;
     }
-    @Ignore
+    @Ignore // конструтор в который мы не передаем за индификатор нужен для того что б мы сами передавали мову
     public Move( int id, int voteCount, String title, String original, String overview, String poster, String bigposter, String backdropP, double voteAverage, String realiseDate) {
         this.id = id;
         this.voteCount = voteCount;

@@ -1,17 +1,8 @@
 package com.example.mymove;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,8 +12,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mymove.adapter.MoveAdapter;
-import com.example.mymove.data.FavoritMove;
 import com.example.mymove.data.MainVievModel;
 import com.example.mymove.data.Move;
 import com.example.mymove.utils.JsonUtil;
@@ -34,13 +34,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private RecyclerView recyclerViewPoster;
     private MoveAdapter moveAdapter;
     private Switch aSwitchSort;
     private TextView textViewPop;
     private TextView textViewTop;
+
+    private  static final int Loader_Id = 133;
+    private LoaderManager loaderManager; // менеджер загрузок
 
     private MainVievModel vievModel; // обьек вье модел
 
@@ -77,13 +80,16 @@ public class MainActivity extends AppCompatActivity {
         textViewTop = findViewById(R.id.textViewTOP);
         vievModel = new ViewModelProvider(this).get(MainVievModel.class); // присвоили
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
-        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
+        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 2)); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
         aSwitchSort = findViewById(R.id.switchSort);
         /*JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
         ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
         moveAdapter.setMoves(moves);*/
         recyclerViewPoster.setAdapter(moveAdapter);
+
+        loaderManager = LoaderManager.getInstance(this); // используется паттерн синлг
+
         aSwitchSort.setChecked(true);
         aSwitchSort.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // добавили слушательно на свич
             @Override
@@ -167,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     //загрузка данных
     private void dowmloadData(int sortSwitch, int page) { // будем сортироват
-        JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 2); // получаем список фильмов
+        /*JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 1); // получаем список фильмов
         ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
 
         if (moves != null && !moves.isEmpty()) { // проверка
@@ -175,7 +181,34 @@ public class MainActivity extends AppCompatActivity {
             for (Move move : moves) {
                 vievModel.InsertMove(move); // вставляем новые данные
             }
+        }*/
+        URL url = Network.bildURL(sortSwitch,page);
+        Bundle bundle = new Bundle();
+        bundle.putString("url",url.toString());
+        loaderManager.restartLoader(Loader_Id,bundle,this);
+    }
+
+    @Override
+    public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
+        Network.JsonPodgruz jsonPodgruz = new Network.JsonPodgruz(this, args);
+        return jsonPodgruz;  // вернули наш загрузчик
+    }
+
+    @Override
+    public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
+        ArrayList<Move> moves = JsonUtil.movesFromJson(data);
+        if (moves!= null && !moves.isEmpty()){ // проверка
+            vievModel.deletAllMove(); // очищаем предыдуще данные
+            for(Move move : moves){
+                vievModel.InsertMove(move); // вставляем новые данные
+            }
         }
+  loaderManager.destroyLoader(Loader_Id);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<JSONObject> loader) {
+
     }
 }
 

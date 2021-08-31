@@ -1,8 +1,15 @@
 package com.example.mymove.utils;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.content.AsyncTaskLoader;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,16 +44,20 @@ public class Network {
     private static final String Sort_By_Value_Date = "release_date.desc"; // по дате
     private static final String Sort_By_Value_Top = "vote_average.desc"; // по оценке
 
+    private static final String Params_Min_vote_COUT = "vote_count.gte"; // сортировка по количеству оценок
+    private static final String Min_Vote_count = "500";
+
     public static final int Popularity = 0;
     public static final int Top = 1;
     public static final int Relies_Date = 2;
 
 
     // Создание трейлера
-    private static URL bildURLVideo(int id) {
+    public static URL bildURLVideo(int id) {
         Uri uri = Uri.parse(String.format(Base_URl_Video, id)).buildUpon()
                 .appendQueryParameter(parms_Api_Key, Api)
-                .appendQueryParameter(parms_Language, Language_Value).build();
+                .appendQueryParameter(parms_Language, Language_Value)
+                .build();
         try {
             return new URL(uri.toString());
         } catch (MalformedURLException e) {
@@ -54,8 +65,8 @@ public class Network {
         }
         return null;
     }
-
-    public static JSONObject getJsonForVideo(int id) { //получается метод из сети
+    //получается метод из сети
+    public static JSONObject getJsonForVideo(int id) {
         JSONObject res = null;
         URL urL = bildURLVideo(id);
         try {
@@ -68,10 +79,11 @@ public class Network {
 //
 
     // Создаем Юрл который возвращает Отзывы
-    private static URL bildURLReviews(int id) {
+    public static URL bildURLReviews(int id) {
         Uri uri = Uri.parse(String.format(Base_URL_Reviews, id)).buildUpon()
-                .appendQueryParameter(parms_Api_Key, Api).build();
-              //.appendQueryParameter(parms_Language, Language_Value)
+                .appendQueryParameter(parms_Api_Key, Api)
+                //.appendQueryParameter(parms_Language, Language_Value)
+                .build();
         try {
             return new URL(uri.toString());
         } catch (MalformedURLException e) {
@@ -79,8 +91,8 @@ public class Network {
         }
         return null;
     }
-
-    public static JSONObject getJsonForReview(int id) { //получается метод из сети
+    //получается метод из сети
+    public static JSONObject getJsonForReview(int id) {
         JSONObject res = null;
         URL urL = bildURLReviews(id);
         try {
@@ -91,8 +103,8 @@ public class Network {
         return res;
     }
 
-    //
-    private static URL bildURL(int sortBy, int page) { // который возвщает запрос
+    // который возвщает запрос
+    public static URL bildURL(int sortBy, int page) {
         URL result = null;
         String metodofSort;
 
@@ -108,7 +120,9 @@ public class Network {
                 .appendQueryParameter(parms_Api_Key, Api)
                 .appendQueryParameter(parms_Language, Language_Value)
                 .appendQueryParameter(parms_Sort_By, metodofSort)
-                .appendQueryParameter(parms_Page, Integer.toString(page)).build(); // передаем страницу
+                .appendQueryParameter(Params_Min_vote_COUT,Min_Vote_count)// выводит фильмы с колвом оценок больше 500
+                .appendQueryParameter(parms_Page, Integer.toString(page))
+                .build(); // передаем страницу
         try {
             result = new URL(uri.toString());
         } catch (MalformedURLException e) {
@@ -117,7 +131,8 @@ public class Network {
         return result;
     }
 
-    public static JSONObject getJsonFromNet(int sortBy, int page) { //получается метод из сети
+    //получается метод из сети
+    public static JSONObject getJsonFromNet(int sortBy, int page) {
         JSONObject res = null;
         URL urL = bildURL(sortBy, page);
         try {
@@ -127,8 +142,8 @@ public class Network {
         }
         return res;
     }
-
-    private static class JsonLoadTask extends AsyncTask<URL, Void, JSONObject> { //принимает юрл , возвращает Jcon
+    //принимает юрл , возвращает Jcon
+    private static class JsonLoadTask extends AsyncTask<URL, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(URL... urls) {
             JSONObject resul = null; // переменная которую возвращаем
@@ -158,6 +173,64 @@ public class Network {
                 }
             }
             return resul;
+        }
+    }
+     // загрузчик
+    public static class JsonPodgruz extends AsyncTaskLoader<JSONObject> {
+
+        private Bundle bundle; // источник данных передаем через бандл
+
+        public JsonPodgruz(@NonNull @NotNull Context context, Bundle bundle) {
+            super(context);
+            this.bundle = bundle;
+        }
+
+
+         @Override
+         protected void onStartLoading() {// что б была загрузка
+             super.onStartLoading();
+             forceLoad();
+         }
+
+         @Nullable
+        @org.jetbrains.annotations.Nullable
+        @Override
+        public JSONObject loadInBackground() {
+            if (bundle == null) {
+                return null;
+            }
+            String urlAsString = bundle.getString("url"); // получаем url   в виде строки
+            URL url = null;
+            try {
+                url = new URL(urlAsString);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            JSONObject res = null;
+            if (url == null){
+                return null;
+            }
+            HttpsURLConnection connection = null;
+            try {
+                connection  = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = connection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                StringBuilder builder = new StringBuilder();
+                String line = reader.readLine();
+                while (line != null){
+                    builder.append(line);
+                    line = reader.readLine();
+                }
+                res = new JSONObject(builder.toString());
+            } catch (IOException | JSONException e){
+                e.printStackTrace();
+            } finally {
+                if (connection != null){
+                    connection.disconnect();
+                }
+            }
+            return  res;
         }
     }
 }
