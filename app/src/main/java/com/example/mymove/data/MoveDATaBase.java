@@ -7,7 +7,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Move.class,FavoritMove.class},version = 6,exportSchema = false)
+@Database(entities = {Move.class,FavoritMove.class},version = 7,exportSchema = false)
 // анатация датабейс ентетис  версия .
     public abstract class MoveDATaBase extends RoomDatabase {
     private static MoveDATaBase daTaBase;

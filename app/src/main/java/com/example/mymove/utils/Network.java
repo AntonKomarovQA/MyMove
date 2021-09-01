@@ -179,8 +179,17 @@ public class Network {
     public static class JsonPodgruz extends AsyncTaskLoader<JSONObject> {
 
         private Bundle bundle; // источник данных передаем через бандл
+         private onStartLoad onStartLoadLis;
 
-        public JsonPodgruz(@NonNull @NotNull Context context, Bundle bundle) {
+         public interface onStartLoad{
+             void onStart();
+         }
+
+         public void setOnStartLoadLis(onStartLoad onStartLoadLis) {
+             this.onStartLoadLis = onStartLoadLis;
+         }
+
+         public JsonPodgruz(@NonNull @NotNull Context context, Bundle bundle) {
             super(context);
             this.bundle = bundle;
         }
@@ -189,6 +198,9 @@ public class Network {
          @Override
          protected void onStartLoading() {// что б была загрузка
              super.onStartLoading();
+             if (onStartLoadLis != null){
+                 onStartLoadLis.onStart();
+             }
              forceLoad();
          }
 

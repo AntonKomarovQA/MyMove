@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,9 +42,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Switch aSwitchSort;
     private TextView textViewPop;
     private TextView textViewTop;
+    private ProgressBar progressBar;
 
-    private  static final int Loader_Id = 133;
+    private static final int Loader_Id = 133;
     private LoaderManager loaderManager; // менеджер загрузок
+
+    private static int page = 1;
+    private static int mathonSort;
+    private static boolean isLoading = false;
 
     private MainVievModel vievModel; // обьек вье модел
 
@@ -78,9 +84,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         textViewPop = findViewById(R.id.textViewPop);
         textViewTop = findViewById(R.id.textViewTOP);
+        progressBar = findViewById(R.id.progressBarLoad);
         vievModel = new ViewModelProvider(this).get(MainVievModel.class); // присвоили
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
-        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 2)); // расположение сеткой
+        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
         aSwitchSort = findViewById(R.id.switchSort);
         /*JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
@@ -94,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         aSwitchSort.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // добавили слушательно на свич
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                page = 1;
                 setaSwitchSorta(isChecked);
             }
         });
@@ -111,7 +119,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         moveAdapter.setOnReacheEndLister(new MoveAdapter.onReacheEndLister() {
             @Override
             public void onReadchEnd() {
-                Toast.makeText(MainActivity.this, "Конец списка ", Toast.LENGTH_SHORT).show();
+                if (!isLoading) {
+                    // Toast.makeText(MainActivity.this, "Конец списка ", Toast.LENGTH_SHORT).show();
+                    dowmloadData(mathonSort, page);
+                }
             }
         });
 
@@ -120,7 +131,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         moveFromData.observe(this, new Observer<List<Move>>() { // создали обсервер
             @Override // когда данные будут изменяться мы будем их устанавливать у адаптера
             public void onChanged(List<Move> moves) {
-                moveAdapter.setMoves(moves);
+                if (page == 1){
+                    moveAdapter.setMoves(moves);
+                }
+                //  moveAdapter.setMoves(moves);
             }
         });
         //1 проверка
@@ -150,25 +164,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     public void onClickTOP(View view) {
-        setaSwitchSorta(false);
+        setaSwitchSorta(true);
         aSwitchSort.setChecked(true);
     }
 
     private void setaSwitchSorta(boolean isTopRat) {
-        int sortSwitch;
+        // int sortSwitch;
         if (isTopRat) {
             textViewTop.setTextColor(getResources().getColor(android.R.color.holo_red_light));
             textViewPop.setTextColor(getResources().getColor(android.R.color.white));
-            sortSwitch = Network.Popularity;
+            mathonSort = Network.Popularity;
         } else {
             textViewPop.setTextColor(getResources().getColor(android.R.color.holo_red_light));
             textViewTop.setTextColor(getResources().getColor(android.R.color.white));
-            sortSwitch = Network.Top;
+            mathonSort = Network.Top;
         }
         /*JSONObject jsonObject = Network.getJsonFromNet(sortSwitch, 1); // а так же загрузка данных получаем список фильмов
         ArrayList<Move> moves = JsonUtil.movesFromJson(jsonObject);
         moveAdapter.setMoves(moves);*/
-        dowmloadData(sortSwitch, 2); // сам метод
+        dowmloadData(mathonSort, page); // сам метод
     }
 
     //загрузка данных
@@ -182,28 +196,42 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 vievModel.InsertMove(move); // вставляем новые данные
             }
         }*/
-        URL url = Network.bildURL(sortSwitch,page);
+        URL url = Network.bildURL(sortSwitch, page);
         Bundle bundle = new Bundle();
-        bundle.putString("url",url.toString());
-        loaderManager.restartLoader(Loader_Id,bundle,this);
+        bundle.putString("url", url.toString());
+        loaderManager.restartLoader(Loader_Id, bundle, this);
     }
 
     @Override
     public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
         Network.JsonPodgruz jsonPodgruz = new Network.JsonPodgruz(this, args);
+        jsonPodgruz.setOnStartLoadLis(new Network.JsonPodgruz.onStartLoad() {
+            @Override
+            public void onStart() {
+                progressBar.setVisibility(View.VISIBLE);
+                isLoading = true;
+            }
+        });
         return jsonPodgruz;  // вернули наш загрузчик
     }
 
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
         ArrayList<Move> moves = JsonUtil.movesFromJson(data);
-        if (moves!= null && !moves.isEmpty()){ // проверка
-            vievModel.deletAllMove(); // очищаем предыдуще данные
-            for(Move move : moves){
+        if (moves != null && !moves.isEmpty()) { // проверка
+            if (page == 1) {
+                vievModel.deletAllMove(); // очищаем предыдуще данные
+                moveAdapter.clear();
+            }
+            for (Move move : moves) {
                 vievModel.InsertMove(move); // вставляем новые данные
             }
+            moveAdapter.addMoves(moves);
         }
-  loaderManager.destroyLoader(Loader_Id);
+        page ++ ;
+        isLoading = false;
+        progressBar.setVisibility(View.INVISIBLE);
+        loaderManager.destroyLoader(Loader_Id);
     }
 
     @Override

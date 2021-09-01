@@ -25,7 +25,6 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
     private onReacheEndLister onReacheEndLister;
 
     public MoveAdapter() {
-
         moves = new ArrayList<>();
     }
 
@@ -50,7 +49,7 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MoveAdapter.MoveHolder holder, int position) {
-       if (position > moves.size()-4 && onReacheEndLister != null){
+       if (moves.size() >= 20 && position > moves.size()-2 && onReacheEndLister != null){
             onReacheEndLister.onReadchEnd();
        }
         Move move = moves.get(position);
@@ -90,6 +89,11 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MoveHolder> {
     public List<Move> getMoves() {
         return moves;
     }
+
+        public void clear(){
+        this.moves.clear();
+        notifyDataSetChanged();
+        }
 
     public void addMoves(List<Move> moves) {
         this.moves = moves;
