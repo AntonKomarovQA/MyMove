@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyMove</string>
+    <string name="poster_K_films">Постер к фильму</string>
+    <string name="poster_K_films2">Постер к фильму</string>
+    <string name="Relies_Date">По дате релиза</string>
+    <string name="Top">По рейтингу</string>
+    <string name="Popularity">По Популярности</string>
+    <string name="nazvanit">Название :</string>
+    <string name="Orig_Title">Оригинальное название :</string>
+    <string name="TopReiting">Рейтинг :</string>
+    <string name="data_relis">Дата релиза :</string>
+    <string name="Opis">Описание :</string>
+    <string name="todo">TODO</string>
+    <string name="Delete_FrovMove">Удалено из избранное</string>
+    <string name="Favorite_Plus">Фильм добавлен в избранное</string>
+    <string name="Favorit">Избранное</string>
+    <string name="Menu">Главная</string>
+    <string name="Play">Старт</string>
+
+
+</resources>

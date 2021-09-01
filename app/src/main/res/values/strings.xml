@@ -1,21 +1,21 @@
 <resources>
     <string name="app_name">MyMove</string>
-    <string name="poster_K_films">Постер к фильму</string>
-    <string name="poster_K_films2">Постер к фильму</string>
-    <string name="Relies_Date">По дате релиза</string>
-    <string name="Top">По рейтингу</string>
-    <string name="Popularity">По Популярности</string>
-    <string name="nazvanit">Название :</string>
-    <string name="Orig_Title">Оригинальное название :</string>
-    <string name="TopReiting">Рейтинг :</string>
-    <string name="data_relis">Дата релиза :</string>
-    <string name="Opis">Описание :</string>
+    <string name="poster_K_films">Movie poster</string>
+    <string name="poster_K_films2">Movie poster</string>
+    <string name="Relies_Date">By release date</string>
+    <string name="Top">By rating</string>
+    <string name="Popularity">By popularity</string>
+    <string name="nazvanit">Title :</string>
+    <string name="Orig_Title">Original name :</string>
+    <string name="TopReiting">Rating :</string>
+    <string name="data_relis">Release Date :</string>
+    <string name="Opis">Description :</string>
     <string name="todo">TODO</string>
-    <string name="Delete_FrovMove">Удалено из избранное</string>
-    <string name="Favorite_Plus">Фильм добавлен в избранное</string>
-    <string name="Favorit">Избранное</string>
-    <string name="Menu">Главная</string>
-    <string name="Play">Старт</string>
+    <string name="Delete_FrovMove">Removed from favorites</string>
+    <string name="Favorite_Plus">The movie was added to favorites</string>
+    <string name="Favorit">Favourites</string>
+    <string name="Menu">Main</string>
+    <string name="Play">Start</string>
 
 
 </resources>

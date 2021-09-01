@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DitalActiviti extends AppCompatActivity {
 
@@ -46,7 +47,7 @@ public class DitalActiviti extends AppCompatActivity {
     private TrailerAdapter trailerAdapter;
     private RecyclerView recyclerViewReview;
     private RecyclerView recyclerViewTrailer;
-
+    private static String lange;
 
     private ImageView imageViewAddFavorit;
 
@@ -85,6 +86,7 @@ public class DitalActiviti extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dital_activiti);
         imageViewBigPoster = findViewById(R.id.BigPoster);
+        lange = Locale.getDefault().getLanguage();
         textViewNazvanie = findViewById(R.id.textVIewPosterTitle2);
         TextViewNazvanieOrig = findViewById(R.id.textViewOrigTitle2);
         TextViewReiting = findViewById(R.id.textViewTopReiting2);
@@ -123,8 +125,8 @@ public class DitalActiviti extends AppCompatActivity {
         recyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewReview.setAdapter(reviewAdapter);
         recyclerViewTrailer.setAdapter(trailerAdapter);
-        JSONObject jsonObjectTrailer = Network.getJsonForVideo(move.getId());
-        JSONObject jsonObjectReview = Network.getJsonForReview(move.getId());
+        JSONObject jsonObjectTrailer = Network.getJsonForVideo(move.getId(),lange);
+        JSONObject jsonObjectReview = Network.getJsonForReview(move.getId(),lange);
         ArrayList<Trailer> trailers = JsonUtil.trailersFromJson(jsonObjectTrailer);
         ArrayList<Review> reviews = JsonUtil.reviewsFromJson(jsonObjectReview);
         reviewAdapter.setReviews(reviews);

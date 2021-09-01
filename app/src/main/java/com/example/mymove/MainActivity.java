@@ -3,6 +3,7 @@ package com.example.mymove;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static int page = 1;
     private static int mathonSort;
     private static boolean isLoading = false;
+
+    private static String lange;
 
     private MainVievModel vievModel; // обьек вье модел
 
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         return super.onOptionsItemSelected(item);
     }
+    private int getColomcount (){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int wich = (int)(displayMetrics.widthPixels/displayMetrics.density);
+        return  wich/185 >2 ? wich/185 :2;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +94,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         textViewPop = findViewById(R.id.textViewPop);
         textViewTop = findViewById(R.id.textViewTOP);
+        lange = Locale.getDefault().getLanguage();
         progressBar = findViewById(R.id.progressBarLoad);
         vievModel = new ViewModelProvider(this).get(MainVievModel.class); // присвоили
         recyclerViewPoster = findViewById(R.id.RecyclerVierPoster);// cоздаем ссылку
-        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, 3)); // расположение сеткой
+        recyclerViewPoster.setLayoutManager(new GridLayoutManager(this, getColomcount())); // расположение сеткой
         moveAdapter = new MoveAdapter(); // присваиваем значение
         aSwitchSort = findViewById(R.id.switchSort);
         /*JSONObject jsonObject = Network.getJsonFromNet(Network.Popularity,2); // получаем список фильмов
@@ -196,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 vievModel.InsertMove(move); // вставляем новые данные
             }
         }*/
-        URL url = Network.bildURL(sortSwitch, page);
+        URL url = Network.bildURL(sortSwitch, page,lange);
         Bundle bundle = new Bundle();
         bundle.putString("url", url.toString());
         loaderManager.restartLoader(Loader_Id, bundle, this);

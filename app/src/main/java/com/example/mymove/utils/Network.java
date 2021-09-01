@@ -38,7 +38,7 @@ public class Network {
     private static final String parms_Page = "page";       // листы
     private static final String parms_Sort_By = "sort_by"; // сортировка по
 
-    private static final String Language_Value = "ru-RU";  // русский язык
+   // private static final String Language_Value = "ru-RU";  // русский язык
     private static final String Api = "7a5a93da768cd04703de8b900e8b4b41"; // ключ
     private static final String Sort_By_Value_Pop = "popularity.desc"; // по популярности
     private static final String Sort_By_Value_Date = "release_date.desc"; // по дате
@@ -53,10 +53,10 @@ public class Network {
 
 
     // Создание трейлера
-    public static URL bildURLVideo(int id) {
+    public static URL bildURLVideo(int id,String lange) {
         Uri uri = Uri.parse(String.format(Base_URl_Video, id)).buildUpon()
                 .appendQueryParameter(parms_Api_Key, Api)
-                .appendQueryParameter(parms_Language, Language_Value)
+                .appendQueryParameter(parms_Language, lange)
                 .build();
         try {
             return new URL(uri.toString());
@@ -66,9 +66,9 @@ public class Network {
         return null;
     }
     //получается метод из сети
-    public static JSONObject getJsonForVideo(int id) {
+    public static JSONObject getJsonForVideo(int id,String lange) {
         JSONObject res = null;
-        URL urL = bildURLVideo(id);
+        URL urL = bildURLVideo(id,lange);
         try {
             res = new JsonLoadTask().execute(urL).get();
         } catch (ExecutionException | InterruptedException e) {
@@ -79,10 +79,10 @@ public class Network {
 //
 
     // Создаем Юрл который возвращает Отзывы
-    public static URL bildURLReviews(int id) {
+    public static URL bildURLReviews(int id,String lange) {
         Uri uri = Uri.parse(String.format(Base_URL_Reviews, id)).buildUpon()
                 .appendQueryParameter(parms_Api_Key, Api)
-                //.appendQueryParameter(parms_Language, Language_Value)
+                .appendQueryParameter(parms_Language, lange)
                 .build();
         try {
             return new URL(uri.toString());
@@ -92,9 +92,9 @@ public class Network {
         return null;
     }
     //получается метод из сети
-    public static JSONObject getJsonForReview(int id) {
+    public static JSONObject getJsonForReview(int id,String lange) {
         JSONObject res = null;
-        URL urL = bildURLReviews(id);
+        URL urL = bildURLReviews(id,lange);
         try {
             res = new JsonLoadTask().execute(urL).get();
         } catch (ExecutionException | InterruptedException e) {
@@ -104,7 +104,7 @@ public class Network {
     }
 
     // который возвщает запрос
-    public static URL bildURL(int sortBy, int page) {
+    public static URL bildURL(int sortBy, int page,String lange) {
         URL result = null;
         String metodofSort;
 
@@ -118,7 +118,7 @@ public class Network {
 
         Uri uri = Uri.parse(Base_URL).buildUpon() //получили строку ввиде запроса
                 .appendQueryParameter(parms_Api_Key, Api)
-                .appendQueryParameter(parms_Language, Language_Value)
+                .appendQueryParameter(parms_Language, lange )
                 .appendQueryParameter(parms_Sort_By, metodofSort)
                 .appendQueryParameter(Params_Min_vote_COUT,Min_Vote_count)// выводит фильмы с колвом оценок больше 500
                 .appendQueryParameter(parms_Page, Integer.toString(page))
@@ -132,9 +132,9 @@ public class Network {
     }
 
     //получается метод из сети
-    public static JSONObject getJsonFromNet(int sortBy, int page) {
+    public static JSONObject getJsonFromNet(int sortBy, int page,String lange) {
         JSONObject res = null;
-        URL urL = bildURL(sortBy, page);
+        URL urL = bildURL(sortBy, page,lange);
         try {
             res = new JsonLoadTask().execute(urL).get();
         } catch (ExecutionException | InterruptedException e) {
