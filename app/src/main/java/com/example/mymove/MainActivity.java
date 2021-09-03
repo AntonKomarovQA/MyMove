@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
     private int getColomcount (){
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics); // получаем характеристики экрана
         int wich = (int)(displayMetrics.widthPixels/displayMetrics.density);
         return  wich/185 >2 ? wich/185 :2;
     }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,131 +21,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_slideshow" />
 
-        <TextView
-            android:id="@+id/textVIewPosterTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:text="@string/nazvanit"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.047"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/BigPoster" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <TextView
-            android:id="@+id/textViewOrigTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:text="@string/Orig_Title"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textVIewPosterTitle2" />
-
-        <TextView
-            android:id="@+id/textViewTopReiting"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:text="@string/TopReiting"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOrigTitle2" />
-
-        <TextView
-            android:id="@+id/textViewDateRelis"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/data_relis"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTopReiting2" />
-
-        <TextView
-            android:id="@+id/textViewOpisanie"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/Opis"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDateRelis" />
-
-        <TextView
-            android:id="@+id/textViewOpisanie2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOpisanie" />
-
-        <TextView
-            android:id="@+id/textVIewPosterTitle2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="TextView"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/BigPoster" />
-
-        <TextView
-            android:id="@+id/textViewOrigTitle2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="TextView"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textVIewPosterTitle2" />
-
-        <TextView
-            android:id="@+id/textViewTopReiting2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="TextView"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOrigTitle2" />
-
-        <TextView
-            android:id="@+id/textViewDateRelis2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="TextView"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTopReiting2" />
-
         <ImageView
             android:id="@+id/imageViewAddFavorit"
             android:layout_width="wrap_content"
@@ -157,21 +31,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/BigPoster"
             app:srcCompat="@android:drawable/btn_star_big_on" />
- <androidx.recyclerview.widget.RecyclerView
-     android:id="@+id/RecyclerVierTrailers"
-     android:layout_width="0dp"
-     android:layout_height="wrap_content"
-     app:layout_constraintEnd_toEndOf="parent"
-     app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@id/textViewOpisanie2"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerVierRevies"
+        <include
+            layout="@layout/move_menu"
+            android:id="@+id/moveinfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/imageViewAddFavorit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/RecyclerVierTrailers"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
